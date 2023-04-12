@@ -1,3 +1,4 @@
+import os
 import random
 from hangman_ascii_art import stages_ascii, logo
 from hangman_word_list import word_list
@@ -18,6 +19,9 @@ end_of_game = "_" not in display
 while not end_of_game:
     while True:
         user_guess = input("Choose a letter: ").upper()
+        # This line clears screen to prevent too much scrolling. If not working, check IDE configs and toggle
+        # "Emulate terminal in output console".
+        os.system('cls')
         if user_guess in letters:
             # Store letters that user introduces to warn her/him if repeated letter is chosen.
             if user_guess not in letters_guessed:
