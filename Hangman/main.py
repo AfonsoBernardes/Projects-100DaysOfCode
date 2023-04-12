@@ -21,4 +21,3 @@ for letter in chosen_word:
         print(user_guess, end='')
     else:
         print("_", end='')
-
