@@ -29,12 +29,16 @@ while should_continue:
     if direction == "ENCODE" or direction == "DECODE":
         text = input("Type your message: ").upper()
         shift = int(input("Type the shift number: "))
+        # Any shift number can be introduced, but it only counts from 0-26.
+        if shift > 26:
+            shift = shift % 26
         ceaser_cipher(message=text, shift_value=shift, cipher_direction=direction)
 
         while True:
             restart = input("\nDo you want to restart the cipher program? ").upper()
             if restart == "NO":
                 should_continue = False
+                print("GOODBYE!")
                 break
             elif restart == "YES":
                 break
