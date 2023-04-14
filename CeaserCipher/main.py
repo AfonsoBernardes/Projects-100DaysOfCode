@@ -5,6 +5,7 @@ alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'
 # Create a function called 'encrypt' that takes the 'text' and 'shift' as inputs. Shift the plain message and print
 # encoded message.
 def ceaser_cipher(message, shift_value, cipher_direction):
+    """Encrypt or decrypt a message based on the direction (encode/decode) and the shift."""
     shifted_alphabet = alphabet[shift_value:] + alphabet[:shift_value]
     processed_message = ""
     for letter in message:
