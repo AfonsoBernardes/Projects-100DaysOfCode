@@ -1,4 +1,5 @@
 from blackjack_ascii import logo
+import deck
 
 ############### Simplified Blackjack #####################
 # The deck is unlimited in size.
@@ -12,7 +13,9 @@ from blackjack_ascii import logo
 # The computer is the dealer.
 
 print(logo)
-print()
+deck = deck.Deck()
+deck.shuffle()
+deck.show_deck()
+deck.draw_card().show_card()
 
-user_hand = []
-cpu_hand = []
+
