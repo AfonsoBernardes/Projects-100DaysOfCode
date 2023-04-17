@@ -1,6 +1,7 @@
 import card
 import random
 
+
 class Deck:
     """
     Create a deck of 52 cards.
