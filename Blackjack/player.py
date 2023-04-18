@@ -33,6 +33,9 @@ class Player:
                 self.current_score += card.get_value()
         return self.current_score
 
+    def is_bust(self):
+        return self.get_hand_score() > 21
+
     def show_hand(self):
         print(f"{self.name}'s hand:", end=" ")
         for card in self.hand:
