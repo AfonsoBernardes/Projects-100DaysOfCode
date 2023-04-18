@@ -36,6 +36,9 @@ class Player:
     def is_bust(self):
         return self.get_hand_score() > 21
 
+    def has_blackjack(self):
+        return self.get_hand_score() == 21 and len(self.hand) == 2
+
     def show_hand(self):
         print(f"{self.name}'s hand:", end=" ")
         for card in self.hand:
