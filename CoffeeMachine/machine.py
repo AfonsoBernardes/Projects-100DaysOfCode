@@ -41,10 +41,15 @@ class Machine:
 
     def get_coins(self):
         print('\nPlease, insert coins.')
-        num_quarters = int(input('How many quarters? '))
-        num_dimes = int(input('How many dimes? '))
-        num_nickles = int(input('How many nickles? '))
-        num_pennies = int(input('How many pennies? '))
+        while True:
+            try:
+                num_quarters = int(input('How many quarters? '))
+                num_dimes = int(input('How many dimes? '))
+                num_nickles = int(input('How many nickles? '))
+                num_pennies = int(input('How many pennies? '))
+                break
+            except ValueError:
+                print("That is not a coin. try again.\n")
 
         return num_quarters * self.accepted_coins['quarters'] + num_dimes * self.accepted_coins['dimes'] + \
             num_nickles * self.accepted_coins['nickles'] + num_pennies * self.accepted_coins['pennies']
