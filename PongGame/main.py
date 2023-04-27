@@ -2,6 +2,7 @@ from turtle import Turtle, Screen
 from paddle import Paddle
 from ball import Ball
 import time
+from scoreboard import Scoreboard
 
 # Create game screen.
 screen = Screen()
@@ -14,6 +15,7 @@ screen.title("PONG GAME")
 r_paddle = Paddle((350, 0))
 l_paddle = Paddle((-350, 0))
 ball = Ball()
+scoreboard = Scoreboard()
 
 # Make screen listen to keyboard inputs for left and right paddles.
 screen.listen()
@@ -27,10 +29,10 @@ screen.onkey(fun=l_paddle.move_down, key="s")
 game_is_on = True
 while game_is_on:
     screen.update()
-    time.sleep(0.1)
+    time.sleep(ball.move_speed)
     ball.move()
     ball.bounce()
     ball.bounce_paddle(r_paddle, l_paddle)
-    ball.out_of_bounds()
+    ball.out_of_bounds(scoreboard)
 
 screen.exitonclick()

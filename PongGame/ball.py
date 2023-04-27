@@ -8,6 +8,7 @@ class Ball(Turtle):
         self.x_move = 10
         self.y_move = 10
         self.create_ball()
+        self.move_speed = 0.1
 
     def create_ball(self):
         self.color('white')
@@ -27,14 +28,20 @@ class Ball(Turtle):
         if (self.distance(r_paddle) <= 50 and self.xcor() >= 340) or \
                 (self.distance(l_paddle) <= 50 and self.xcor() <= -340):
             self.x_move *= -1  # Only change y direction.
+            self.move_speed *= 0.9  # Increase ball speed every time it touches paddle.
 
-    def out_of_bounds(self):
-        if self.xcor() >= 380 or self.xcor() <= -380:
+    def out_of_bounds(self, scoreboard):
+        if self.xcor() >= 380:
+            scoreboard.l_point()
+            self.reset_position()
+        elif self.xcor() <= -380:
+            scoreboard.r_point()
             self.reset_position()
 
     def reset_position(self):
         self.goto(0, 0)
         self.x_move *= -1
+        self.move_speed = 0.1  # Reset ball speed to initial speed.
 
     def move(self):
         self.goto(self.xcor()+self.x_move, self.ycor()+self.y_move)
