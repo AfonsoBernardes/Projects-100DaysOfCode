@@ -12,25 +12,34 @@ class Snake:
         # Snake starts as 3 white squares.
         self.segment_list = []
         for position in SEGMENTS_START_POSITIONS:
-            segment = Turtle()
-            segment.penup()
-            segment.setposition(position)
-            segment.shape(name="square")
-            segment.color("white")
-            self.segment_list.append(segment)
-
+            self.add_segment(position=position)
         self.head = self.segment_list[0]
 
-    def get_segment_list(self):
-        return self.segment_list
-
     def move(self):
-        segment_list = self.get_segment_list()
-        for seg in range(len(segment_list) - 1, 0, -1):
-            new_x = segment_list[seg - 1].xcor()
-            new_y = segment_list[seg - 1].ycor()
-            segment_list[seg].goto((new_x, new_y))
+        for seg in range(len(self.segment_list) - 1, 0, -1):
+            new_x = self.segment_list[seg - 1].xcor()
+            new_y = self.segment_list[seg - 1].ycor()
+            self.segment_list[seg].goto((new_x, new_y))
         self.head.forward(20)
+
+    def collision_with_body(self):
+        for segment in self.segment_list[1:]:
+            print(self.head.position() == segment.position())
+            if self.head.distance(segment) < 10:
+                return True
+        return False
+
+    def extend(self):
+        position = self.segment_list[-1].position()
+        self.add_segment(position=position)
+
+    def add_segment(self, position):
+        segment = Turtle()
+        segment.penup()
+        segment.setposition(position)
+        segment.shape(name="square")
+        segment.color("white")
+        self.segment_list.append(segment)
 
     def move_right(self):
         if self.head.heading() != LEFT:
