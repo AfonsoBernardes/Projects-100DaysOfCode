@@ -2,7 +2,7 @@ from turtle import Turtle
 import car_manager
 import player
 
-FONT = ("Courier", 24, "normal")
+FONT = ("Courier", 20, "normal")
 
 
 class Scoreboard(Turtle):
@@ -16,8 +16,8 @@ class Scoreboard(Turtle):
 
     def update_scoreboard(self):
         self.clear()
-        self.goto(x=-220, y=260)
-        self.write(f"Level: {self.level}", align="center", font=FONT)
+        self.goto(x=-290, y=260)
+        self.write(f"Level: {self.level}", align="left", font=FONT)
 
     def increase_level(self):
         self.level += 1
@@ -27,3 +27,7 @@ class Scoreboard(Turtle):
             user.goto(player.STARTING_POSITION)
             self.increase_level()
             car_manager.MOVE_SPEED += car_manager.MOVE_INCREMENT
+
+    def game_over(self):
+        self.goto(x=0.0, y=0.0)
+        self.write("GAME OVER", align="center", font=FONT)
