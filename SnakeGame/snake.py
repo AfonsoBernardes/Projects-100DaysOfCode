@@ -24,7 +24,6 @@ class Snake:
 
     def collision_with_body(self):
         for segment in self.segment_list[1:]:
-            print(self.head.position() == segment.position())
             if self.head.distance(segment) < 10:
                 return True
         return False
