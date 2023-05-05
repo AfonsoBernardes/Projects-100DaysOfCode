@@ -1,4 +1,3 @@
-# TODO: Create a letter using starting_letter.txt
 # Iterate names in invited_names.txt
 with open('./Input/Names/invited_names.txt', mode='r') as invited_names:
     for person_name in invited_names.readlines():
