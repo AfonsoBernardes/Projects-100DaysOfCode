@@ -27,7 +27,7 @@ while current_score < total_score:
     if answer_state == 'Exit':
         df_states.to_csv('missed_states.csv')
         break
-        
+
     if answer_state in df_states["state"].values:
         # Write state onto the map. Need the process of lifting pen and move to right location.
         state_index = df_states[df_states.state == answer_state].index.values[0]  # Comes as a number ready to use.
