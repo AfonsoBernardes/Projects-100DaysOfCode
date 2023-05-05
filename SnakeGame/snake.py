@@ -11,9 +11,12 @@ class Snake:
     def __init__(self):
         # Snake starts as 3 white squares.
         self.segment_list = []
+        self.create_snake()
+        self.head = self.segment_list[0]
+
+    def create_snake(self):
         for position in SEGMENTS_START_POSITIONS:
             self.add_segment(position=position)
-        self.head = self.segment_list[0]
 
     def move(self):
         for seg in range(len(self.segment_list) - 1, 0, -1):
@@ -21,6 +24,12 @@ class Snake:
             new_y = self.segment_list[seg - 1].ycor()
             self.segment_list[seg].goto((new_x, new_y))
         self.head.forward(20)
+
+    def reset(self):
+        # Make segments go off-screen.
+        for seg in self.segment_list:
+            seg.hideturtle()
+        self.__init__()
 
     def collision_with_body(self):
         for segment in self.segment_list[1:]:

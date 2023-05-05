@@ -38,14 +38,14 @@ while game_is_on:
         scoreboard.increase_score()
 
     # Detect collision with wall.
-    if (snake.head.xcor() >= screen_width/2) or (snake.head.ycor() >= screen_height/2) or \
-           (snake.head.xcor() <= -screen_width/2) or (snake.head.ycor() <= -screen_height/2):
+    if (snake.head.xcor() >= screen_width / 2) or (snake.head.ycor() >= screen_height / 2) or \
+            (snake.head.xcor() <= -screen_width / 2) or (snake.head.ycor() <= -screen_height / 2):
         scoreboard.game_over()
-        game_is_on = False
+        snake.reset()
 
     # Detect collision with snake body.
     if snake.collision_with_body():
         scoreboard.game_over()
-        game_is_on = False
+        snake.reset()
 
 screen.exitonclick()  # Exit screen on click only
