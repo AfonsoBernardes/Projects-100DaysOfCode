@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-import random
+from random import randint, shuffle
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
@@ -9,9 +9,9 @@ LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
 NUMBERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 SYMBOLS = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
-nr_letters = random.randint(8, 10)
-nr_symbols = random.randint(2, 4)
-nr_numbers = random.randint(2, 4)
+nr_letters = randint(8, 10)
+nr_symbols = randint(2, 4)
+nr_numbers = randint(2, 4)
 
 
 def generate_password():
@@ -21,19 +21,19 @@ def generate_password():
 
     # Create list with random letters, numbers and symbols.
     for l in range(0, nr_letters):
-        random_letter = LETTERS[random.randint(0, len(LETTERS) - 1)]
+        random_letter = LETTERS[randint(0, len(LETTERS) - 1)]
         character_list.append(random_letter)
 
     for s in range(0, nr_symbols):
-        random_symbol = SYMBOLS[random.randint(0, len(SYMBOLS) - 1)]
+        random_symbol = SYMBOLS[randint(0, len(SYMBOLS) - 1)]
         character_list.append(random_symbol)
 
     for n in range(0, nr_numbers):
-        random_number = NUMBERS[random.randint(0, len(NUMBERS) - 1)]
+        random_number = NUMBERS[randint(0, len(NUMBERS) - 1)]
         character_list.append(random_number)
 
     # For the list created, randomly shuffle the list.
-    random.shuffle(character_list)
+    shuffle(character_list)
     password = ''.join(character_list)
 
     password_entry.insert(0, password)
