@@ -16,9 +16,7 @@ nr_numbers = randint(2, 4)
 
 
 def generate_password():
-    password = ""
     character_list = []
-    number_characters = nr_letters + nr_symbols + nr_numbers
 
     # Create list with random letters, numbers and symbols.
     for l in range(0, nr_letters):
