@@ -19,8 +19,8 @@ WEEK_DAY_MAP = {0: 'Monday', 1: 'Tuesday',
 now = dt.datetime.now()
 week_day = WEEK_DAY_MAP[now.weekday()]
 
-today_day = 12  # now.day
-today_month = 10  # now.month
+today_day = now.day
+today_month = now.month
 today_year = now.year
 
 list_of_birthdays = pd.read_csv("birthdays.csv").to_dict(orient="records")
