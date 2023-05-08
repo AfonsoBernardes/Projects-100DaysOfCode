@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import randint, shuffle
 import pyperclip
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
@@ -39,12 +40,47 @@ def generate_password():
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+def find_password():
+    website = website_entry.get()
+    email = email_entry.get()
+    password = password_entry.get()
+    is_empty = len(website) == 0
+
+    if is_empty:
+        messagebox.showinfo(title="EMPTY WEBSITE FIELD", message="Please fill 'website' field in order to retrieve "
+                                                                 "corresponding password.")
+    else:
+        try:
+            # Try loading file.
+            with open('password_data.json', mode="r") as password_json:
+                password_data = json.load(password_json)  # Load pre-existing data.
+
+        except FileNotFoundError as nf_message:  # File does not exist. Create it and add info.
+            messagebox.showinfo(title="FILE NOT FOUND", message="No file was found. You haven't saved any passwords.")
+
+        else:
+            try:
+                website_password = password_data[website]['password']
+            except KeyError:
+                messagebox.showinfo(title="PASSWORD NOT FOUND", message=f"No password associated with '{website}' was "
+                                                                        f"found.")
+            else:
+                password_entry.insert(0, website_password)
+
+
+# ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
-    is_empty = len(website) == 0 or len(email) == 0 or len(password) == 0
+    new_data = {
+        website: {
+            "email": email,
+            "password": password,
+        }
+    }
 
+    is_empty = len(website) == 0 or len(email) == 0 or len(password) == 0
     if is_empty:
         messagebox.showinfo(title="EMPTY FIELDS", message="Please fill all the information necessary.")
     else:
@@ -54,11 +90,25 @@ def save():
                                                               f"\nIs it ok to save?")
 
         if is_ok:
-            with open('passwords.txt', mode="a") as password_file:
-                password_file.write(f"{website} | {email} | {password}\n")
+            try:
+                # Try loading file.
+                with open('password_data.json', mode="r") as password_json:
+                    data = json.load(password_json)  # Load pre-existing data.
 
-            website_entry.delete(0, 'end')
-            password_entry.delete(0, 'end')
+            except FileNotFoundError as nf_message:  # File does not exist. Create it and add info.
+                print(f"{nf_message} was not found. Creating file.")
+                with open('password_data.json', mode="w") as password_json:
+                    json.dump(new_data, password_json, indent=4)
+
+            else:
+                # If file existed before, update already existing data with new data and save to .json file.
+                data.update(new_data)
+                with open('password_data.json', mode="w") as password_json:
+                    json.dump(data, password_json, indent=4)
+
+            finally:
+                website_entry.delete(0, 'end')
+                password_entry.delete(0, 'end')
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -75,8 +125,8 @@ canvas.grid(row=0, column=1)
 website_label = Label(text="Website:", bg="black", fg="white", highlightthickness=0)
 website_label.grid(row=1, column=0)
 
-website_entry = Entry(width=46)
-website_entry.grid(row=1, column=1, columnspan=2, padx=3, pady=5)
+website_entry = Entry(width=33)
+website_entry.grid(row=1, column=1, padx=3, pady=5)
 website_entry.focus()
 
 # Email entry.
@@ -96,6 +146,9 @@ password_entry.grid(row=3, column=1, padx=3, pady=5)
 
 generator_button = Button(text="Generate", width=10, highlightthickness=0, command=generate_password)
 generator_button.grid(row=3, column=2)
+
+search_button = Button(text="Search", width=10, highlightthickness=0, command=find_password)
+search_button.grid(row=1, column=2)
 
 add_button = Button(text="Add", width=39, highlightthickness=0, command=save)
 add_button.grid(row=4, column=1, columnspan=2, padx=3, pady=5)
