@@ -10,7 +10,7 @@ import pandas as pd
 
 # 4. Send the letter generated in step 3 to that person's email address.
 
-MY_EMAIL = "afonso.duarte.bernardes@gmail.com"
+MY_EMAIL = ""
 PASSWORD = ""
 WEEK_DAY_MAP = {0: 'Monday', 1: 'Tuesday',
                 2: 'Wednesday', 3: 'Thursday',
