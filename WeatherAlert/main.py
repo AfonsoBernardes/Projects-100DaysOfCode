@@ -4,16 +4,16 @@ from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
 
 # Twilio Setup
-ACCOUNT_SID = "ENTER YOUR TWILIO ACCOUNT SID."
-AUTH_TOKEN = "ENTER YOUR TWILIO AUTH TOKEN."
-PHONE_NUM_FROM = "ENTER TWILIO PHONE NUMBER TO MESSAGE FROM."
-PHONE_NUM_TO = "ENTER PHONE NUMBER TO MESSAGE."
+ACCOUNT_SID = os.environ.get("ACCOUNT_SID")
+AUTH_TOKEN = os.environ.get("AUTH_TOKEN")
+PHONE_NUM_FROM = os.environ.get("PHONE_NUM_FROM")
+PHONE_NUM_TO = os.environ.get("PHONE_NUM_TO")
 
 
 # Work on PythonAnywhere
 
 OWM_Endpoint = "https://api.openweathermap.org/data/2.8/onecall"
-API_KEY = "ENTER YOUR OWM API KEY."
+API_KEY = os.environ.get("API_KEY")
 MY_LAT = 40.203316
 MY_LON = -8.410257
 
