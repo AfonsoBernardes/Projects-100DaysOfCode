@@ -1,17 +1,16 @@
+from datetime import datetime, timedelta
 from data_manager import DataManager
-from flight_data import FlightData
 from flight_search import FlightSearch
 
-# This file will need to use the DataManager,FlightSearch, FlightData,
-# NotificationManager classes to achieve the program requirements.
 
 data_manager = DataManager()
 flight_search = FlightSearch()
 
-flight_list = data_manager.get_data()
-for flight in flight_list:
-    destination = flight["city"]
-    flight_id = flight["id"]
+data_manager.populate_iaca(flight_search)  # Populate Google sheets with IATA codes.
 
-    iata_code = flight_search.get_destination_code(city_name=destination)  # Get IATA code for each destination.
-    data_manager.populate_iaca(flight_id, iata_code)  # Populate google sheets with IATA codes.
+date_from = datetime.now().date().strftime("%d/%m/%Y")
+date_to = (datetime.now().date() + timedelta(days=180)).strftime("%d/%m/%Y")
+
+
+flight_search.get_flight_prices(data_manager, fly_from_code="PT", date_from=date_from, date_to=date_to)
+
