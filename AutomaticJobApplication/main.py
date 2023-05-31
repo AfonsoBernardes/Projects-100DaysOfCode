@@ -1,15 +1,12 @@
-from telnetlib import EC
-
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 import os
 import time
 
-from selenium.webdriver.support.wait import WebDriverWait
 
 USERNAME = os.environ.get("USERNAME")
 PASSWORD = os.environ.get("PASSWORD")
@@ -38,7 +35,7 @@ sign_in.click()
 time.sleep(15)
 
 # Apply for jobs.
-job_list = driver.find_elements(By.CSS_SELECTOR, ".job-card-container--clickable")
+job_list = driver.find_elements(By.CSS_SELECTOR, ".jobs-search-results__list-item")
 
 for job in job_list:
     job.click()
@@ -54,25 +51,25 @@ for job in job_list:
             # If the submit_button is a "Next" button, then this is a multi-step application, so skip.
             close_button = driver.find_element(By.CSS_SELECTOR, ".artdeco-modal__dismiss")
             close_button.click()
-            time.sleep(2)
 
             dismiss_button = driver.find_element(By.CSS_SELECTOR, ".artdeco-modal__confirm-dialog-btn")
             dismiss_button.click()
-            time.sleep(2)
 
         else:
-            follow_checkbox = driver.find_element(By.CSS_SELECTOR, "input:checked[type='checkbox']")
-            print(follow_checkbox)
+            follow_checkbox = driver.find_element(By.CSS_SELECTOR, "div form footer div label")
+            follow_checkbox.click()
+            submit_button.click()
 
-            WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,
-                                                                        "input:checked[type='checkbox']"))).click()
-            driver.find_element_by_css_selector("label[for$='_StateNetDB_ckBxAllStates']").click()
-            time.sleep(200)
+            dismiss_button = driver.find_element(By.CSS_SELECTOR, "artdeco-modal__dismiss")
+            dismiss_button.click()
 
     # If already applied to job or job is no longer accepting applications, then skip.
     except NoSuchElementException:
         print("No application button, skipped.")
         continue
-        
+    except IndexError:
+        print("Already applied to this job, skipped.")
+        continue
+
 time.sleep(5)
 driver.quit()
