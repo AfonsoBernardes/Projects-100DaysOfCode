@@ -1,3 +1,5 @@
+from telnetlib import EC
+
 from selenium import webdriver
 from selenium.common import NoSuchElementException
 from selenium.webdriver.chrome.service import Service
@@ -7,12 +9,15 @@ from selenium.webdriver.common.keys import Keys
 import os
 import time
 
+from selenium.webdriver.support.wait import WebDriverWait
+
 USERNAME = os.environ.get("USERNAME")
 PASSWORD = os.environ.get("PASSWORD")
 
 chrome_driver_path = "C:\\Development\\chromedriver.exe"
 chrome_service = Service(executable_path=chrome_driver_path)
 driver = webdriver.Chrome(service=chrome_service)
+driver.maximize_window()
 
 driver.get('https://www.linkedin.com/jobs/search/?currentJobId=3622448256&distance=25&f_AL=true&f_E=1%2C2&'
            'f_JT=F%2CI&f_TPR=r604800&geoId=102257491&keywords=software%20developer&refresh=true')
@@ -33,20 +38,41 @@ sign_in.click()
 time.sleep(15)
 
 # Apply for jobs.
-# try:
-#     verify = driver.find_element(By.CSS_SELECTOR, "#home button")
-#     verify.click()
-#     print("Verified.")
-#
-# except NoSuchElementException:
-#     print("Verification not needed.")
-
 job_list = driver.find_elements(By.CSS_SELECTOR, ".job-card-container--clickable")
 
 for job in job_list:
     job.click()
-    apply_button = driver.find_elements(By.CSS_SELECTOR, ".jobs-apply-button")
-    apply_button.click()
     time.sleep(2)
 
-time.sleep(100)
+    try:
+        apply_button = driver.find_elements(By.CSS_SELECTOR, ".jobs-apply-button")[0]
+        apply_button.click()
+        time.sleep(2)
+
+        submit_button = driver.find_element(By.CSS_SELECTOR, "footer button")
+        if submit_button.text != "Submit application":
+            # If the submit_button is a "Next" button, then this is a multi-step application, so skip.
+            close_button = driver.find_element(By.CSS_SELECTOR, ".artdeco-modal__dismiss")
+            close_button.click()
+            time.sleep(2)
+
+            dismiss_button = driver.find_element(By.CSS_SELECTOR, ".artdeco-modal__confirm-dialog-btn")
+            dismiss_button.click()
+            time.sleep(2)
+
+        else:
+            follow_checkbox = driver.find_element(By.CSS_SELECTOR, "input:checked[type='checkbox']")
+            print(follow_checkbox)
+
+            WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,
+                                                                        "input:checked[type='checkbox']"))).click()
+            driver.find_element_by_css_selector("label[for$='_StateNetDB_ckBxAllStates']").click()
+            time.sleep(200)
+
+    # If already applied to job or job is no longer accepting applications, then skip.
+    except NoSuchElementException:
+        print("No application button, skipped.")
+        continue
+        
+time.sleep(5)
+driver.quit()
