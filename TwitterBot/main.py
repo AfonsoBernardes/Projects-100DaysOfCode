@@ -8,8 +8,8 @@ import time
 TWITTER_USERNAME = os.environ.get("TWITTER_USERNAME")
 TWITTER_PASSWORD = os.environ.get("TWITTER_PASSWORD")
 CHROME_DRIVER_PATH = "C:\\Development\\chromedriver.exe"
-PROMISED_UP = 500
-PROMISED_DOWN = 100
+PROMISED_DOWN = 400
+PROMISED_UP = 100
 
 
 class InternetSpeedTwitterBot:
@@ -33,16 +33,18 @@ class InternetSpeedTwitterBot:
         go_button = self.driver.find_element(By.CSS_SELECTOR, ".start-button a")
         go_button.click()
 
-        time.sleep(150)
+        time.sleep(70)
 
-        self.download_speed = self.driver.find_element(By.CSS_SELECTOR, ".download-speed").text
-        self.upload_speed = self.driver.find_element(By.CSS_SELECTOR, ".upload-speed").text
-        print(f"Download:{self.download_speed} | Upload: {self.upload_speed}")
+        self.download_speed = float(self.driver.find_element(By.CSS_SELECTOR, ".download-speed").text)
+        self.upload_speed = float(self.driver.find_element(By.CSS_SELECTOR, ".upload-speed").text)
+        print(f"Download: {self.download_speed} | Upload: {self.upload_speed}")
+
+        return self.download_speed, self.upload_speed
 
     def tweet_at_provider(self):
         self.driver.get('https://twitter.com/home')
         self.driver.maximize_window()
-        time.sleep(1)
+        time.sleep(2)
 
         # Log in
         user_input = self.driver.find_element(By.CSS_SELECTOR, "input")
@@ -59,10 +61,27 @@ class InternetSpeedTwitterBot:
         log_in_button = self.driver.find_element(By.XPATH, '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div['
                                                            '2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div/div/div')
         log_in_button.click()
-        time.sleep(3)
+        time.sleep(5)
+
+        tweet_message = f"Hello @MEOpt, you promised an up/download speed of {PROMISED_UP}/{PROMISED_DOWN} Mbps, " \
+                        f"however I'm only getting {self.upload_speed}/{self.download_speed} Mbps.\n\n" \
+                        f"This message is automated. #Python."
+
+        tweet_box = self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div["
+                                                       "2]/main/div/div/div/div/div/div[3]/div/div[2]/div["
+                                                       "1]/div/div/div/div[2]/div["
+                                                       "1]/div/div/div/div/div/div/div/div/div/div/label/div["
+                                                       "1]/div/div/div/div/div/div[2]/div/div/div/div")
+        tweet_box.send_keys(tweet_message)
+
+        send_button = self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div["
+                                                         "2]/main/div/div/div/div/div/div[3]/div/div[2]/div["
+                                                         "1]/div/div/div/div[2]/div[3]/div/div/div[2]/div[3]")
+        send_button.click()
 
 
 twitter_bot = InternetSpeedTwitterBot(chrome_driver_path=CHROME_DRIVER_PATH)
-# twitter_bot.tweet_at_provider()
-twitter_bot.get_internet_speed()
+download_speed, upload_speed = twitter_bot.get_internet_speed()
 
+if download_speed < PROMISED_DOWN or upload_speed < PROMISED_UP:
+    twitter_bot.tweet_at_provider()
