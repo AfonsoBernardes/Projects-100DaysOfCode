@@ -7,8 +7,9 @@ import time
 
 TWITTER_USERNAME = os.environ.get("TWITTER_USERNAME")
 TWITTER_PASSWORD = os.environ.get("TWITTER_PASSWORD")
+PROVIDER_TWITTER = "@MEOpt"
 CHROME_DRIVER_PATH = "C:\\Development\\chromedriver.exe"
-PROMISED_DOWN = 400
+PROMISED_DOWN = 450
 PROMISED_UP = 100
 
 
@@ -63,8 +64,8 @@ class InternetSpeedTwitterBot:
         log_in_button.click()
         time.sleep(5)
 
-        tweet_message = f"Hello @MEOpt, you promised an up/download speed of {PROMISED_UP}/{PROMISED_DOWN} Mbps, " \
-                        f"however I'm only getting {self.upload_speed}/{self.download_speed} Mbps.\n\n" \
+        tweet_message = f"Hello {PROVIDER_TWITTER}, you promised an up/download speed of {PROMISED_UP}/{PROMISED_DOWN}"\
+                        f"Mbps, however I'm only getting {self.upload_speed}/{self.download_speed} Mbps.\n\n" \
                         f"This message is automated. #Python."
 
         tweet_box = self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div["
