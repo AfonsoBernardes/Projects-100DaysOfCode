@@ -18,16 +18,17 @@ def scrape_website(website_url):
     location = input("Which city do you wanna move to? ")
     city_area = input("How far, in kilometers, are you willing to be from city center? ")
     maximum_price = input("What is the maximum price you are willing to pay per month? ")
+    minimum_bedrooms = input("What is the minimum amount of bedrooms you want? (-1 for Shared; 0 for Studio; etc.)")
 
     headers = {"User-agent": USER_AGENT,
                "Accept-Language": "en-GB,en;q=0.9,fr;q=0.8,pt-PT;q=0.7,pt;q=0.6,es;q=0.5",
                }
 
     property_parameters = {
-        "term": "London",
-        "area": "5",
-        "prices_max": "2000",
-        "bedrooms_min": "0",
+        "term": location,
+        "area": city_area,
+        "prices_max": maximum_price,
+        "bedrooms_min": minimum_bedrooms,
         "sortType": "1",  # Sort by ascending price.
     }
 
